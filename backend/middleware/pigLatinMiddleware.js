@@ -46,11 +46,44 @@ const convertToPigLatinWord = function(word)
     return suffix + prefix + firstConsonantEnding + endingPunctuation;
   }
   // If the word contains no vowels, return the word as is.
-  else { return word; }
+  else { return word + endingPunctuation; }
 };
 
-const convertWordFromPigLatin = function(word)
+const convertWordFromPigLatin = function(text)
 {
+  // Get vowels and PigLatin Keywords.
+  const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+  const punctuation = [';', ':', ',', '.'];
+  const firstVowelEnding = "way";
+  const firstConsonantEnding = "ay";
+  
+  // Find ending punctuation and remove it from the word.
+  const endingPunctuation = punctuation.filter(character => word.endsWith(character));
+  word = word.replace(new RegExp(`[${punctuation.join('')}]$`), "");
+  
+  // Check if the word ends with "way" or "ay".
+  if (word.endsWith(firstVowelEnding))
+  {
+    // Remove the "way" ending.
+    word = word.slice(0, -firstVowelEnding.length);
+    return word + endingPunctuation;
+  }
+  else if (word.endsWith(firstConsonantEnding))
+  {
+    // Remove the "ay" ending.
+    word = word.slice(0, -firstConsonantEnding.length);
+    // Find the index of the last consonant group.
+    const lastConsonantIndex = word.split('').findLastIndex(letter => !vowels.includes(letter));
+    // Rearrange the word to get the original order.
+    const prefix = word.slice(lastConsonantIndex + 1);
+    const suffix = word.slice(0, lastConsonantIndex + 1);
+    return prefix + suffix + endingPunctuation;
+  }
+  else
+  {
+    // If there are no recognized endings, return the word as is
+    return word + endingPunctuation;
+  }
   return null;
 };
 
@@ -63,9 +96,13 @@ const convertToPigLatin = function(text)
   ).join(' ');
 };
 
-const convertFromPigLatin = function(text)
+const convertFromPigLatin = function(word)
 {
-  return null;
+  return text.split(' ').map((word) =>
+    {
+      return convertWordFromPigLatin(word);
+    }
+  ).join(' ');
 };
 
 
