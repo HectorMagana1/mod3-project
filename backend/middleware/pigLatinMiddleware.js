@@ -49,7 +49,7 @@ const convertToPigLatinWord = function(word)
   else { return word + endingPunctuation; }
 };
 
-const convertWordFromPigLatin = function(text)
+const convertFromPigLatinWord = function(word)
 {
   // Get vowels and PigLatin Keywords.
   const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
@@ -59,7 +59,7 @@ const convertWordFromPigLatin = function(text)
   
   // Find ending punctuation and remove it from the word.
   const endingPunctuation = punctuation.filter(character => word.endsWith(character));
-  word = word.replace(new RegExp(`[${punctuation.join('')}]$`), "");
+  word = word.replace(endingPunctuation, "");
   
   // Check if the word ends with "way" or "ay".
   if (word.endsWith(firstVowelEnding))
@@ -84,7 +84,6 @@ const convertWordFromPigLatin = function(text)
     // If there are no recognized endings, return the word as is
     return word + endingPunctuation;
   }
-  return null;
 };
 
 const convertToPigLatin = function(text)
@@ -96,11 +95,11 @@ const convertToPigLatin = function(text)
   ).join(' ');
 };
 
-const convertFromPigLatin = function(word)
+const convertFromPigLatin = function(text)
 {
   return text.split(' ').map((word) =>
     {
-      return convertWordFromPigLatin(word);
+      return convertFromPigLatinWord(word);
     }
   ).join(' ');
 };
@@ -112,10 +111,10 @@ const pigLatinMiddleware = function(req, res, next)
 
   try
   {
-    const pigLatinText = convertToPigLatin(req.body.text);
+    const pigLatinText = convertToPigLatin(req.body.body);
     // Attach the payload from the token to the request object (req)
     // req.id = payload.id;  // req.username = payload.username
-    req.body.text = pigLatinText;
+    req.body.body = pigLatinText;
     // Move on to the requested route (next)
     next()
   }
@@ -134,6 +133,11 @@ const pigLatinMiddleware = function(req, res, next)
     res.status(403).json({ error: err.message })
   }
 }
+let mySentence = "Hey, my name is James and I'm an accountant.";
+let lat = convertToPigLatin(mySentence);
+let english = convertFromPigLatin(lat);
+console.log(lat);
+console.log(english);
 
 
 module.exports =
