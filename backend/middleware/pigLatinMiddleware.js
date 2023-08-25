@@ -10,7 +10,7 @@ const convertToPigLatinWord = function(word)
 {
   // Get vowels and PigLatin Keywords.
   const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U',];
-  const punctuation = [',', '.'];
+  const punctuation = [';', ':', ',', '.'];
   const firstVowelEnding = "way";
   const firstConsonantEnding = "ay";
   // Ensure the word is lowercase
