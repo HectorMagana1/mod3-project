@@ -49,6 +49,11 @@ const convertToPigLatinWord = function(word)
   else { return word; }
 };
 
+const convertWordFromPigLatin = function(word)
+{
+  return null;
+};
+
 const convertToPigLatin = function(text)
 {
   return text.split(' ').map((word) =>
@@ -56,6 +61,11 @@ const convertToPigLatin = function(text)
       return convertToPigLatinWord(word);
     }
   ).join(' ');
+};
+
+const convertFromPigLatin = function(text)
+{
+  return null;
 };
 
 
